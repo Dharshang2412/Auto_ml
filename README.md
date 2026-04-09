@@ -34,8 +34,7 @@ This project is designed to simplify machine learning workflows for beginners an
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/Auto_ml.git
-cd Auto_ml
+https://github.com/Dharshang2412/Auto_ml.git
 ```
 
 ### 2. Create virtual environment (recommended)
