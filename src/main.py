@@ -5,7 +5,7 @@ from streamlit_option_menu import option_menu
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
+
 
 
 from ml_utility import (read_data,
@@ -48,7 +48,7 @@ if df is not None:
         "Logistic Regression": LogisticRegression(),
         "Support Vector Classifier": SVC(),
         "Random Forest Classifier": RandomForestClassifier(),
-        "XGBoost Classifier": XGBClassifier()
+
     }
 
 
