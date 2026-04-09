@@ -1,6 +1,1 @@
-Auto_ml/
-│── src/
-│── data/
-│── requirements.txt
-│── runtime.txt
 python-3.11
