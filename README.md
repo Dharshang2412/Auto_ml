@@ -66,23 +66,8 @@ http://localhost:8501
 
 ## 📸 Screenshots
 
-### 🔹 Home Page
+<img width="1769" height="914" alt="Screenshot 2026-04-09 133234" src="https://github.com/user-attachments/assets/a4b9e9f3-7920-4d51-95d2-ef2fcac7111c" />
 
-(Add your Streamlit home page screenshot here)
-
-### 🔹 Data Upload
-
-(Add dataset upload UI screenshot)
-
-### 🔹 Model Training
-
-(Add model training & results screen)
-
-### 🔹 Performance Metrics
-
-(Add graphs/metrics screenshot)
-
----
 
 ## 🛠 Tech Stack
 
