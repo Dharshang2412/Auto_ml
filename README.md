@@ -68,6 +68,7 @@ http://localhost:8501
 
 <img width="1769" height="914" alt="Screenshot 2026-04-09 133234" src="https://github.com/user-attachments/assets/a4b9e9f3-7920-4d51-95d2-ef2fcac7111c" />
 
+---
 
 ## 🛠 Tech Stack
 
@@ -89,6 +90,12 @@ http://localhost:8501
 
 ---
 
+## 🚀 Deployed on Streamlit 
+
+* https://automl-dharshan2412.streamlit.app/
+
+---
+  
 ## 📌 Future Improvements
 
 * Hyperparameter tuning (GridSearch/Optuna)
