@@ -1,116 +1,116 @@
-# 🚀 AutoML – Automated Machine Learning System
+# 🚀 AutoML Pro Dashboard
 
-## 📌 Project Description
-
-AutoML is a Streamlit-based web application that automates the process of machine learning model training. It allows users to upload datasets, preprocess data, train multiple models, and evaluate their performance — all without writing code.
-
-This project is designed to simplify machine learning workflows for beginners and accelerate experimentation for developers.
+An interactive **Auto Machine Learning Web App** built using **Streamlit** that allows users to upload datasets, perform Exploratory Data Analysis (EDA), train multiple ML models, and compare their performance — all in a few clicks.
 
 ---
 
-## ✨ Features
+## 🌟 Features
 
-* 📂 Upload datasets (CSV/Excel)
-* 🧹 Automatic data preprocessing
-* 🔍 Feature selection and handling missing values
-* 🤖 Train multiple ML models automatically:
+### 📂 Data Handling
+- Upload **CSV & Excel (.xlsx)** files
+- Supports built-in datasets
+- Handles encoding issues automatically
 
-  * Linear Regression
-  * Logistic Regression
-  * Decision Tree
-  * Random Forest
-  * Support Vector Machine (SVM)
-  * XGBoost
-* 📊 Model performance comparison
-* 🏆 Automatic best model selection
-* 💾 Save trained models
-* 📈 Visualization of results (charts & metrics)
-* 🌐 Interactive UI using Streamlit
+### 📊 Exploratory Data Analysis (EDA)
+- Dataset preview
+- 📈 Histogram (feature distribution)
+- 🔥 Correlation Heatmap
+- 🥧 Pie Chart (categorical distribution)
+
+### 🤖 Model Training
+- Automatic detection:
+  - Classification
+  - Regression
+- Multiple models trained at once:
+  - Logistic Regression
+  - Random Forest
+  - Decision Tree
+  - Linear Regression (for regression)
+
+### 📈 Results Dashboard
+- Model leaderboard
+- Accuracy displayed in **percentage (%)**
+- Interactive bar chart comparison
+- Confusion matrix (for classification)
+- Download trained model (`.pkl`)
 
 ---
 
-## ⚙️ How to Run
+## 🛠️ Tech Stack
 
-### 1. Clone the repository
+- **Frontend/UI:** Streamlit  
+- **Data Processing:** Pandas, NumPy  
+- **Machine Learning:** Scikit-learn  
+- **Visualization:** Plotly  
+- **Model Saving:** Joblib  
+
+---
+
+## 📂 Project Structure
+
+
+Auto_ml/
+│
+├── src/
+│ ├── main.py # Streamlit App
+│ └── ml_utility.py # ML pipeline functions
+│
+├── data/ # Sample datasets
+├── trained_model/ # Saved models
+├── requirements.txt
+└── README.md
+
+
+---
+
+## ⚙️ Installation
+
+### 1️⃣ Clone the repository
 
 ```bash
-https://github.com/Dharshang2412/Auto_ml.git
-```
-
-### 2. Create virtual environment (recommended)
-
-```bash
-conda create -n automl_env python=3.10
-conda activate automl_env
-```
-
-### 3. Install dependencies
-
-```bash
+git clone https://github.com/your-username/Auto_ml.git
+cd Auto_ml
+2️⃣ Install dependencies
 pip install -r requirements.txt
-```
+3️⃣ Run the app
+streamlit run src/main.py
+🌐 Deployment (Streamlit Cloud)
+Push code to GitHub
+Go to Streamlit Cloud
+Click New App
+Select your repo
+Set:
+Main file: src/main.py
+Click Deploy
+📸 Screenshots (Optional)
 
-### 4. Run the application
+Add screenshots of your app here for better presentation
 
-```bash
-streamlit run app.py
-```
+🎯 Use Cases
+Quick ML prototyping
+Learning machine learning workflows
+Dataset exploration
+Comparing ML models easily
+🚀 Future Improvements
+Hyperparameter tuning
+Advanced metrics (F1, RMSE, MAE)
+Feature importance visualization
+Model history tracking
+User authentication system
+🤝 Contributing
 
-### 5. Open in browser
+Pull requests are welcome. For major changes, please open an issue first.
 
-```
-http://localhost:8501
-```
+📜 License
 
----
+This project is open-source and available under the MIT License.
 
-## 📸 Screenshots
-
-<img width="1769" height="914" alt="Screenshot 2026-04-09 133234" src="https://github.com/user-attachments/assets/a4b9e9f3-7920-4d51-95d2-ef2fcac7111c" />
-
----
-
-## 🛠 Tech Stack
-
-* Python
-* Streamlit
-* Scikit-learn
-* XGBoost
-* Pandas & NumPy
-* Matplotlib / Seaborn
-
----
-
-## 🎯 Use Cases
-
-* Beginners learning machine learning
-* Rapid prototyping of ML models
-* Data analysis and experimentation
-* Academic projects
-
----
-
-## 🚀 Deployed on Streamlit 
-
-* https://automl-dharshan2412.streamlit.app/
-
----
-  
-## 📌 Future Improvements
-
-* Hyperparameter tuning (GridSearch/Optuna)
-* Model deployment (API)
-* Auto feature engineering
-* Cloud integration
-
----
-
-## 👨‍💻 Author
+👨‍💻 Author
 
 Dharshan G
+GitHub: https://github.com/Dharshang2412
+stremlit: https://automl-dharshan2412.streamlit.app/
 
----
+⭐ Support
 
-## ⭐ If you like this project
-
-Give it a star on GitHub ⭐
+If you like this project, give it a ⭐ on GitHub!
