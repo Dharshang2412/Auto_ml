@@ -1,6 +1,7 @@
-streamlit
-pandas
-scikit-learn
-matplotlib
-openpyxl
-streamlit-option-menu
+streamlit>=1.30
+pandas>=1.5
+numpy>=1.23
+scikit-learn>=1.2
+plotly>=5.0
+joblib>=1.2
+openpyxl>=3.0
