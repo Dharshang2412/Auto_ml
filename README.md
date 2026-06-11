@@ -82,9 +82,6 @@ Select your repo
 Set:
 Main file: src/main.py
 Click Deploy
-📸 Screenshots (Optional)
-
-Add screenshots of your app here for better presentation
 
 🎯 Use Cases
 Quick ML prototyping
