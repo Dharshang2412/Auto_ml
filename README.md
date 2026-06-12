@@ -1,113 +1,168 @@
 # 🚀 AutoML Pro Dashboard
 
-An interactive **Auto Machine Learning Web App** built using **Streamlit** that allows users to upload datasets, perform Exploratory Data Analysis (EDA), train multiple ML models, and compare their performance — all in a few clicks.
+An end-to-end Automated Machine Learning (AutoML) Dashboard built using **Python**, **Streamlit**, **Scikit-Learn**, **XGBoost**, and **Plotly**. The application enables users to upload datasets, perform exploratory data analysis, train multiple machine learning models, compare results, generate insights, and download trained models—all through an intuitive web interface.
 
 ---
 
-## 🌟 Features
-
-### 📂 Data Handling
-- Upload **CSV & Excel (.xlsx)** files
-- Supports built-in datasets
-- Handles encoding issues automatically
+## 📌 Features
 
 ### 📊 Exploratory Data Analysis (EDA)
-- Dataset preview
-- 📈 Histogram (feature distribution)
-- 🔥 Correlation Heatmap
-- 🥧 Pie Chart (categorical distribution)
 
-### 🤖 Model Training
-- Automatic detection:
-  - Classification
-  - Regression
-- Multiple models trained at once:
-  - Logistic Regression
-  - Random Forest
-  - Decision Tree
-  - Linear Regression (for regression)
+* Dataset preview
+* Interactive histograms
+* Correlation heatmaps
+* Data overview and statistics
 
-### 📈 Results Dashboard
-- Model leaderboard
-- Accuracy displayed in **percentage (%)**
-- Interactive bar chart comparison
-- Confusion matrix (for classification)
-- Download trained model (`.pkl`)
+### 🤖 Automated Model Training
+
+Supports both Classification and Regression tasks.
+
+#### Classification Models
+
+* Logistic Regression
+* Random Forest Classifier
+* Decision Tree Classifier
+* K-Nearest Neighbors (KNN)
+* XGBoost Classifier
+
+#### Regression Models
+
+* Linear Regression
+* Random Forest Regressor
+* Decision Tree Regressor
+* K-Nearest Neighbors Regressor
+* XGBoost Regressor
+
+### 🏅 Model Leaderboard
+
+* Automatic model comparison
+* Performance ranking
+* Interactive visualization of model scores
+* Best model identification
+
+### 🔍 Feature Importance Analysis
+
+* Visual feature importance charts
+* Identification of key drivers affecting predictions
+* Support for tree-based models
+
+### 🎯 Performance Evaluation
+
+* Accuracy/R² score calculation
+* Confusion Matrix visualization for classification tasks
+* Comparative model performance analysis
+
+### 📋 Executive Report
+
+* Dataset overview
+* Model performance summary
+* Key findings and recommendations
+* Professional analytics dashboard
+
+### 🧠 AI Insights
+
+* AI-generated result summary
+* Business-oriented recommendations
+* Risk identification
+* Actionable insights from trained models
+
+### 📄 Report Download
+
+* Export project results
+* Download trained machine learning models
+* Save outputs for future deployment
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
-- **Frontend/UI:** Streamlit  
-- **Data Processing:** Pandas, NumPy  
-- **Machine Learning:** Scikit-learn  
-- **Visualization:** Plotly  
-- **Model Saving:** Joblib  
+* Python
+* Streamlit
+* Pandas
+* NumPy
+* Scikit-Learn
+* XGBoost
+* Plotly
+* Joblib
 
 ---
 
 ## 📂 Project Structure
 
-
+```text
 Auto_ml/
 │
-├── src/
-│ ├── main.py # Streamlit App
-│ └── ml_utility.py # ML pipeline functions
+├── data/
+│   └── Sample datasets
 │
-├── data/ # Sample datasets
-├── trained_model/ # Saved models
+├── src/
+│   ├── main.py
+│   └── ml_utility.py
+│
+├── trained_model/
+│
 ├── requirements.txt
-└── README.md
-
+├── README.md
+└── .gitignore
+```
 
 ---
 
-## ⚙️ Installation
+## 🚀 Installation
 
-### 1️⃣ Clone the repository
+Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/Auto_ml.git
+git clone https://github.com/Dharshang2412/Auto_ml.git
 cd Auto_ml
-2️⃣ Install dependencies
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
-3️⃣ Run the app
+```
+
+Run the application:
+
+```bash
 streamlit run src/main.py
-🌐 Deployment (Streamlit Cloud)
-Push code to GitHub
-Go to Streamlit Cloud
-Click New App
-Select your repo
-Set:
-Main file: src/main.py
-Click Deploy
+```
 
-🎯 Use Cases
-Quick ML prototyping
-Learning machine learning workflows
-Dataset exploration
-Comparing ML models easily
-🚀 Future Improvements
-Hyperparameter tuning
-Advanced metrics (F1, RMSE, MAE)
-Feature importance visualization
-Model history tracking
-User authentication system
-🤝 Contributing
+---
 
-Pull requests are welcome. For major changes, please open an issue first.
+## 📈 Workflow
 
-📜 License
+1. Upload a CSV or Excel dataset
+2. Select target column
+3. Choose preprocessing options
+4. Train multiple ML models automatically
+5. Compare model performance
+6. Analyze feature importance
+7. Review AI insights and executive summary
+8. Download the best model
 
-This project is open-source and available under the MIT License.
+---
 
-👨‍💻 Author
+## 🎯 Use Cases
 
-Dharshan G
-GitHub: https://github.com/Dharshang2412
-stremlit: https://automl-dharshan2412.streamlit.app/
+* Automated Machine Learning Experiments
+* Educational ML Projects
+* Business Analytics
+* Predictive Modeling
+* Data Science Demonstrations
+* Academic and Internship Projects
 
-⭐ Support
+---
 
-If you like this project, give it a ⭐ on GitHub!
+## 👨‍💻 Author
+
+**Dharshan G**
+
+Passionate about Machine Learning, Data Science, Artificial Intelligence, and Full Stack Development.
+
+---
+
+## ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
