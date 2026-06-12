@@ -7,6 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import accuracy_score, r2_score
+from sklearn.preprocessing import LabelEncoder
 import joblib
 
 
@@ -28,6 +29,10 @@ def preprocess_data(df, target_column, scaler_type):
     X = df.drop(columns=[target_column])
     y = df[target_column]
 
+    # Encode classification targets
+    if y.dtype == "object" or y.nunique() < 20:
+        le = LabelEncoder()
+        y = le.fit_transform(y)
     # Detect column types
     num_cols = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
     cat_cols = [col for col in X.columns if col not in num_cols]
@@ -57,8 +62,15 @@ def preprocess_data(df, target_column, scaler_type):
     X_train = preprocessor.fit_transform(X_train)
     X_test = preprocessor.transform(X_test)
 
-    return X_train, X_test, y_train, y_test
+    feature_names = preprocessor.get_feature_names_out()
 
+    return (
+        X_train,
+        X_test,
+        y_train,
+        y_test,
+        feature_names
+    )
 
 # 🧠 Train Model
 def train_model(X_train, y_train, model, model_name):
@@ -74,12 +86,13 @@ def train_model(X_train, y_train, model, model_name):
 
 
 # 📊 Evaluate Model
-def evaluate_model(model, X_test, y_test):
+from sklearn.metrics import accuracy_score, r2_score
+
+def evaluate_model(model, X_test, y_test, is_classification):
 
     y_pred = model.predict(X_test)
 
-    # Detect classification vs regression
-    if y_test.dtype == "object" or y_test.nunique() < 20:
+    if is_classification:
         return accuracy_score(y_test, y_pred)
     else:
         return r2_score(y_test, y_pred)
