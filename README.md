@@ -128,6 +128,9 @@ Run the application:
 ```bash
 streamlit run src/main.py
 ```
+## 🌐 Live Demo
+
+🚀 Live App: https://automl-dharshan2412.streamlit.app/
 
 ---
 
