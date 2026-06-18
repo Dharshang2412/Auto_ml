@@ -17,6 +17,8 @@ from ml_utility import (
     train_model,
     evaluate_model
 )
+from audit_agent import run_probes, get_agent_verdict
+from profiling_agent import compute_profile, get_profile_narrative
 def generate_pdf(report_text):
 
     pdf_path = "AutoML_Report.pdf"
@@ -88,11 +90,103 @@ if df is not None:
 
     tabs = st.tabs([
         "📊EDA",
+        "🛡️Trust Auditor",
         "⚙️Training",
         "⚡Insights"
 
     ])
 
+    if "results" not in st.session_state:
+        with tabs[3]:
+            st.info("👈 Train a model in the Training tab first to see results and insights here.")
+
+
+    # ================== TRUST AUDITOR TAB (Agent) ==================
+    with tabs[1]:
+        st.subheader("🛡️ Data Quality & Trust Auditor Agent")
+        st.caption(
+            "Runs a battery of statistical checks (leakage, imbalance, cardinality, "
+            "missingness, duplicates) and then reasons over the findings to flag risks "
+            "before you spend time training models on broken data."
+        )
+
+        audit_target = st.selectbox(
+            "Target Column to Audit",
+            df.columns,
+            key="audit_target_column"
+        )
+
+        audit_is_classification = (
+            df[audit_target].dtype == "object"
+            or (
+                pd.api.types.is_integer_dtype(df[audit_target])
+                and df[audit_target].nunique() < 20
+            )
+        )
+
+        task_label = "Classification" if audit_is_classification else "Regression"
+        st.info(f"Detected task type: **{task_label}**")
+
+        if not os.environ.get("GEMINI_API_KEY"):
+            st.warning(
+                "No Gemini API key found. The audit will still run the statistical "
+                "probes, but will fall back to a rule-based summary instead of the AI "
+                "agent's reasoning. Set GEMINI_API_KEY in your .env file to enable full reasoning."
+            )
+
+        if st.button("🔍 Run Trust Audit"):
+            with st.spinner("Running statistical probes..."):
+                findings = run_probes(df, audit_target, audit_is_classification)
+
+            dataset_meta = {
+                "rows": int(df.shape[0]),
+                "columns": int(df.shape[1]),
+                "task_type": task_label,
+                "target_column": audit_target
+            }
+
+            with st.spinner("Agent is reasoning over the findings..."):
+                verdict = get_agent_verdict(findings, dataset_meta)
+
+            st.session_state["audit_verdict"] = verdict
+            st.session_state["audit_findings_raw"] = findings
+
+        if "audit_verdict" in st.session_state:
+            verdict = st.session_state["audit_verdict"]
+
+            verdict_label = verdict.get("verdict", "unknown")
+            verdict_display = {
+                "safe_to_train": ("✅ Safe to Train", "success"),
+                "train_with_caution": ("⚠️ Train with Caution", "warning"),
+                "fix_before_training": ("🛑 Fix Before Training", "error"),
+            }.get(verdict_label, (f"Verdict: {verdict_label}", "info"))
+
+            label, style = verdict_display
+            getattr(st, style)(label)
+
+            st.write(verdict.get("summary", ""))
+
+            ranked = verdict.get("ranked_findings", [])
+            if ranked:
+                st.subheader("📋 Findings, Ranked by Risk")
+
+                risk_order = {"high": 0, "medium": 1, "low": 2}
+                ranked_sorted = sorted(
+                    ranked,
+                    key=lambda f: risk_order.get(f.get("risk", "medium"), 1)
+                )
+
+                for f in ranked_sorted:
+                    risk = f.get("risk", "medium")
+                    icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(risk, "⚪")
+                    col_label = f.get("column") or "Dataset-wide"
+                    with st.expander(f"{icon} [{risk.upper()}] {col_label} — {f.get('issue', '')}"):
+                        st.write(f.get("recommendation", ""))
+            else:
+                st.success("No risk findings to display — dataset looks clean.")
+
+            with st.expander("🔬 Raw probe output (debug)"):
+                st.json(st.session_state.get("audit_findings_raw", []))
 
     # ================== EDA TAB ==================
     with tabs[0]:
@@ -123,7 +217,7 @@ if df is not None:
 
 
     # ================== TRAINING TAB ==================
-    with tabs[1]:
+    with tabs[2]:
         st.subheader("🤖 Model Training")
 
         col1, col2, col3 = st.columns(3)
@@ -228,127 +322,119 @@ if df is not None:
 
             st.success("✅ Training Completed!")
 
-            if "results" in st.session_state:
-                st.divider()
-                st.header("📈 Results Dashboard")
+        if "results" in st.session_state:
+            st.divider()
+            st.header("📈 Results Dashboard")
 
-                result_df = st.session_state["results"]
+            result_df = st.session_state["results"]
 
-                result_df = result_df.sort_values(
-                    by=result_df.columns[1],
-                    ascending=False
-                ).reset_index(drop=True)
+            result_df = result_df.sort_values(
+                by=result_df.columns[1],
+                ascending=False
+            ).reset_index(drop=True)
 
-                result_df.insert(
-                    0,
-                    "Rank",
-                    range(1, len(result_df) + 1)
-                )
+            result_df.insert(
+                0,
+                "Rank",
+                range(1, len(result_df) + 1)
+            )
 
-                st.subheader("🏅 Model Leaderboard")
+            st.subheader("🏅 Model Leaderboard")
 
-                st.dataframe(
-                    result_df,
-                    hide_index=True,
-                    use_container_width=True
-                )
+            st.dataframe(
+                result_df,
+                hide_index=True,
+                use_container_width=True
+            )
 
-                metric_col = result_df.columns[2]
+            metric_col = result_df.columns[2]
 
-                leaderboard_fig = px.bar(
-                    result_df,
-                    x="Model",
-                    y=metric_col,
-                    color="Model",
-                    text=metric_col,
-                    title="Model Performance Comparison"
-                )
+            leaderboard_fig = px.bar(
+                result_df,
+                x="Model",
+                y=metric_col,
+                color="Model",
+                text=metric_col,
+                title="Model Performance Comparison"
+            )
 
-                st.plotly_chart(
-                    leaderboard_fig,
-                    use_container_width=True,
-                    key="leaderboard_chart"
-                )
-                best_score = st.session_state["best_score"]
-                model = st.session_state["best_model"]
-                y_test = st.session_state["y_test"]
-                X_test = st.session_state["X_test"]
+            st.plotly_chart(
+                leaderboard_fig,
+                use_container_width=True,
+                key="leaderboard_chart"
+            )
+            best_score = st.session_state["best_score"]
+            model = st.session_state["best_model"]
+            y_test = st.session_state["y_test"]
+            X_test = st.session_state["X_test"]
 
-                st.metric(
-                    "🏆 Best Score",
-                    f"{best_score * 100:.2f}%"
-                )
+            st.metric(
+                "🏆 Best Score",
+                f"{best_score * 100:.2f}%"
+            )
 
             # ================== AI INSIGHTS TAB ==================
 
-            with tabs[2]:
+            with tabs[3]:
 
-                st.subheader("✨ AI Result Summary")
 
-                best_model_name = result_df.iloc[0]["Model"]
-
-                summary = f"""
-                Dataset contains {df.shape[0]} rows and {df.shape[1]} columns.
-
-                Best Model:
-                {best_model_name}
-
-                Performance:
-                {best_score * 100:.2f}%
-
-                The model comparison indicates that
-                {best_model_name} achieved the highest performance.
-
-                Recommendation:
-                Deploy {best_model_name} for production use.
-                """
-
-                st.success(summary)
-                st.subheader("📑 Executive Report")
-
-                best_model_name = result_df.iloc[0]["Model"]
-
-                report = f"""
-                AUTO ML EXECUTIVE REPORT
-
-                =================================
-
-                Dataset Information
-
-                Rows: {df.shape[0]}
-                Columns: {df.shape[1]}
-
-                =================================
-
-                MODEL PERFORMANCE
-
-                Best Model:
-                {best_model_name}
-
-                Best Score:
-                {best_score * 100:.2f}%
-
-                =================================
-
-                BUSINESS RECOMMENDATION
-
-                Deploy {best_model_name}
-                for production use.
-
-                =================================
-                """
-
-                st.text_area(
-                    "Generated Report",
-                    report,
-                    height=300
+                st.subheader(" Data Profiling Card")
+                st.caption(
+                    "A quick health check on the dataset: missing data, duplicate rows, "
+                    "skewed columns, outliers, and identifier-like columns -- pure statistics, "
+                    "no model training involved."
                 )
-                st.download_button(
-                    "📄 Download Report",
-                    report,
-                    file_name="AutoML_Report.txt",
-                    mime="text/plain"
-                )
+
+                if st.button("🔍 Generate Profile"):
+                    with st.spinner("Computing dataset profile..."):
+                        try:
+                            profile = compute_profile(df)
+                            st.session_state["data_profile"] = profile
+                        except Exception as e:
+                            st.error(f"Profiling failed: {e}")
+
+                if "data_profile" in st.session_state:
+                    profile = st.session_state["data_profile"]
+
+                    p_col1, p_col2, p_col3, p_col4 = st.columns(4)
+                    with p_col1:
+                        st.metric("Rows", profile["n_rows"])
+                    with p_col2:
+                        st.metric("Columns", profile["n_cols"])
+                    with p_col3:
+                        st.metric("Missing Data", f"{profile['overall_missing_pct']}%")
+                    with p_col4:
+                        st.metric("Duplicate Rows", profile["duplicate_rows"])
+
+                    st.dataframe(
+                        profile["profile_table"],
+                        hide_index=True,
+                        use_container_width=True
+                    )
+
+                    flag_cols = st.columns(4)
+                    flag_labels = [
+                        ("⚠️ High Missing", profile["flagged_high_missing"]),
+                        ("🆔 ID-like Columns", profile["flagged_high_cardinality"]),
+                        ("📐 Skewed Columns", profile["flagged_skewed"]),
+                        ("📍 Notable Outliers", profile["flagged_outliers"]),
+                    ]
+                    for col_widget, (label, items) in zip(flag_cols, flag_labels):
+                        with col_widget:
+                            if items:
+                                st.warning(f"**{label}**\n\n" + ", ".join(items))
+                            else:
+                                st.success(f"**{label}**\n\nNone")
+
+                    if st.button("✨ Generate AI Summary"):
+                        with st.spinner("Agent is summarizing the profile..."):
+                            narrative = get_profile_narrative(profile)
+                            st.session_state["profile_narrative"] = narrative
+
+                    if "profile_narrative" in st.session_state:
+                        nr = st.session_state["profile_narrative"]
+                        st.info(f"**{nr.get('headline', '')}**")
+                        st.write(nr.get("summary", ""))
 
             # ================= Feature Importance =================
 
@@ -426,6 +512,3 @@ if df is not None:
                 file_name="best_model.pkl"
             )
             csv = result_df.to_csv(index=False)
-
-
-
