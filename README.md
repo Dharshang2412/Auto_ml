@@ -1,28 +1,65 @@
-# 🚀 AutoML Pro Dashboard
+# 🚀 AutoML Pro – AI-Powered Machine Learning Intelligence Platform
 
-An end-to-end Automated Machine Learning (AutoML) Dashboard built using **Python**, **Streamlit**, **Scikit-Learn**, **XGBoost**, and **Plotly**. The application enables users to upload datasets, perform exploratory data analysis, train multiple machine learning models, compare results, generate insights, and download trained models—all through an intuitive web interface.
+AutoML Pro is an end-to-end Machine Learning dashboard built with **Streamlit**, designed to simplify the complete ML workflow from data exploration to model evaluation. The platform combines traditional AutoML capabilities with AI-powered dataset auditing and profiling using **Google Gemini**, enabling users to identify data quality issues before training models.
+
+## 🌐 Live Application
+
+Live Demo: https://automl-dharshan2412.streamlit.app/
 
 ---
 
-## 📌 Features
+## ✨ Features
 
 ### 📊 Exploratory Data Analysis (EDA)
 
-* Dataset preview
-* Interactive histograms
+* Interactive dataset preview
+* Dynamic histograms
 * Correlation heatmaps
-* Data overview and statistics
+* Numerical and categorical data exploration
+* Instant visual insights using Plotly
+
+### 🛡️ AI-Powered Trust Auditor
+
+Before model training, the Trust Auditor automatically performs:
+
+* Missing value analysis
+* Duplicate row detection
+* Class imbalance detection
+* High-cardinality feature identification
+* Constant column detection
+* Target leakage detection
+* Sample size evaluation
+
+The findings are analyzed by **Google Gemini**, which generates:
+
+* Dataset health verdict
+* Risk prioritization
+* Actionable recommendations
+* Training readiness assessment
+
+### 📋 Intelligent Data Profiling
+
+Automatically generates a comprehensive dataset profile:
+
+* Missing value percentages
+* Column cardinality analysis
+* Skewness detection
+* Outlier identification
+* Duplicate analysis
+* Dataset health indicators
+
+Gemini then produces a concise AI-generated narrative summary explaining the overall condition of the dataset.
 
 ### 🤖 Automated Model Training
 
-Supports both Classification and Regression tasks.
+Supports both Classification and Regression workflows.
 
 #### Classification Models
 
 * Logistic Regression
 * Random Forest Classifier
 * Decision Tree Classifier
-* K-Nearest Neighbors (KNN)
+* K-Nearest Neighbors
 * XGBoost Classifier
 
 #### Regression Models
@@ -33,56 +70,63 @@ Supports both Classification and Regression tasks.
 * K-Nearest Neighbors Regressor
 * XGBoost Regressor
 
-### 🏅 Model Leaderboard
+### 📈 Model Performance Dashboard
 
-* Automatic model comparison
-* Performance ranking
-* Interactive visualization of model scores
-* Best model identification
+* Model leaderboard
+* Automatic best-model selection
+* Performance comparison charts
+* Accuracy-based ranking
+* Download trained models as `.pkl`
 
 ### 🔍 Feature Importance Analysis
 
-* Visual feature importance charts
-* Identification of key drivers affecting predictions
-* Support for tree-based models
+For supported tree-based models:
 
-### 🎯 Performance Evaluation
+* Feature ranking
+* Importance visualization
+* Top feature identification
 
-* Accuracy/R² score calculation
-* Confusion Matrix visualization for classification tasks
-* Comparative model performance analysis
+### ⚡ AI Insights
 
-### 📋 Executive Report
+Generate AI-powered insights about:
 
-* Dataset overview
-* Model performance summary
-* Key findings and recommendations
-* Professional analytics dashboard
-
-### 🧠 AI Insights
-
-* AI-generated result summary
-* Business-oriented recommendations
-* Risk identification
-* Actionable insights from trained models
-
-### 📄 Report Download
-
-* Export project results
-* Download trained machine learning models
-* Save outputs for future deployment
+* Dataset quality
+* Risk assessment
+* Data health summaries
+* Training recommendations
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack
 
-* Python
+### Frontend
+
 * Streamlit
+
+### Data Processing
+
 * Pandas
 * NumPy
+
+### Visualization
+
+* Plotly
+
+### Machine Learning
+
 * Scikit-Learn
 * XGBoost
-* Plotly
+
+### AI Integration
+
+* Google Gemini API
+
+### Reporting
+
+* ReportLab
+
+### Model Serialization
+
 * Joblib
 
 ---
@@ -97,75 +141,113 @@ Auto_ml/
 │
 ├── src/
 │   ├── main.py
-│   └── ml_utility.py
+│   ├── ml_utility.py
+│   ├── audit_agent.py
+│   ├── profiling_agent.py
+│   └── report_generator.py
 │
-├── trained_model/
-│
+├── .env.example
 ├── requirements.txt
-├── README.md
-└── .gitignore
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## 🚀 Installation
+## ⚙️ Installation
 
-Clone the repository:
+### Clone Repository
 
 ```bash
 git clone https://github.com/Dharshang2412/Auto_ml.git
 cd Auto_ml
 ```
 
-Install dependencies:
+### Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### Activate Environment
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Linux / macOS:
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the application:
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+Example configuration file:
+
+```env
+GEMINI_API_KEY=YOUR_API_KEY_HERE
+```
+
+---
+
+## ▶️ Run Application
 
 ```bash
-streamlit run src/main.py
+https://automl-dharshan2412.streamlit.app/
 ```
-## 🌐 Live Demo
-
-🚀 Live App: https://automl-dharshan2412.streamlit.app/
 
 ---
 
-## 📈 Workflow
+## 📸 Workflow
 
 1. Upload a CSV or Excel dataset
-2. Select target column
-3. Choose preprocessing options
-4. Train multiple ML models automatically
-5. Compare model performance
-6. Analyze feature importance
-7. Review AI insights and executive summary
-8. Download the best model
+2. Explore data using EDA tools
+3. Run Trust Auditor for data quality assessment
+4. Generate AI-powered profiling report
+5. Train multiple ML models automatically
+6. Compare model performance
+7. Analyze feature importance
+8. Download the best-performing model
 
 ---
 
-## 🎯 Use Cases
+## 🎯 Key Highlights
 
-* Automated Machine Learning Experiments
-* Educational ML Projects
-* Business Analytics
-* Predictive Modeling
-* Data Science Demonstrations
-* Academic and Internship Projects
+* End-to-End AutoML Pipeline
+* AI-Powered Dataset Auditing
+* Intelligent Data Profiling
+* Automated Model Benchmarking
+* Interactive Visual Analytics
+* Gemini-Powered Recommendations
+* Classification & Regression Support
+* Streamlit-Based User Interface
 
----
 
 ## 👨‍💻 Author
 
 **Dharshan G**
 
-Passionate about Machine Learning, Data Science, Artificial Intelligence, and Full Stack Development.
+GitHub: https://github.com/Dharshang2412
 
 ---
 
-## ⭐ Support
+## 📄 License
 
-If you found this project useful, consider giving it a ⭐ on GitHub.
+This project is licensed under the MIT License.
